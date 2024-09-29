@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
+
+    </head>
+    <style>
+        .loader {
+          border: 0.5rem solid #ffffff00;
+          border-radius: 50%;
+          border-top: 0.5rem solid #ffffff;
+          border-bottom: 0.5rem solid #ffffff;
+          width: 2rem;
+          height: 2rem;
+          -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+        }
+        
+        @-webkit-keyframes spin {
+          0% { -webkit-transform: rotate(0deg); }
+          100% { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+    </style>
+    <body id="scrolling">
+        <main>
+            <div class="hero">
+                <h1>KJT</h1>
+                <h2>the world's first AI powered project evaluator.</h2>
+                <a href="#start" class="hero-button-container">
+                    <img id="dropdown-arrow" src="arrow_down.svg">
+                </a>
+            </div>
+
+            <div id="start" class="input">
+
+                    
+                    <input type="text" id="title-input" name="title-input" placeholder="Project Title">
+                    <br>
+                    
+                    <input type="text" id="description-input" name="description-input" placeholder="Project Description">
+                    <br>
+                    
+                    <input type="text" id="link-input" name="link-input" placeholder="Project Link">
+                    <br>
+                    <br>
+                    <!-- <label for="text">Human Verification</label>
+                        <input type="checkbox" id="verification" name="verifcation">
+                        <br> -->
+
+                <form action="#response">
+                    <button id="submit" onclick="onSubmit();insultChange();">Submit</button> 
+
+                </form>
+            </div>
+            <div id="response">
+                <div id="myDIV"></div>
+
+                <p id="p1"></p>
+            </div>
+
+                
+                
+
+                <script>
+                var loaded = 0;
+                var charCount = 0;
+                var speed = 40;
+                var element = document.getElementById("myDIV");
+
+                const insults = [
+                    "This project has the creativity of a beige wall and the functionality of a screen door a submarine.",
+                    "I've seen abandoned shopping carts with more direction than this mess.",
+                    "If confusion was the goal, congratulations, this is a masterpiece.",
+                    "This project should be in a museum – right next to the exhibits on what not to do.",
+                    "I didn’t realize ‘disaster’ could be an art form until I saw this.",
+                    "This has all the excitement of watching paint dry, but somehow less progress.",
+                    "It's like you took all the worst ideas, put them in a blender, and hit 'catastrophe' instead of 'blend.'"
+                ];
+
+                function onSubmit() {
+                    document.getElementById("scrolling").style.overflow = 'hidden';
+                    element.classList.add("loader");
+                    var id = setInterval(frame, 100);
+                    function frame() {
+                        if (loaded >= 100) {
+                            clearInterval(id);
+                            loaded = 0;
+                            element.classList.remove("loader");
+                            document.getElementById("p1").style.display = 'block';
+                            typeWriter();
+                        } else {
+                            loaded++;
+                        }
+                    }
+                }
+            
+                function insultChange() {
+                    randInt = Math.floor(Math.random() * 7);
+                    randText = insults[randInt]
+                }
+
+                function typeWriter() {
+                    if (charCount < randText.length) {
+                        document.getElementById("p1").innerHTML += randText.charAt(charCount);
+                        charCount++;
+                        setTimeout(typeWriter, speed);
+                    }
+                }
+
+                </script>
+            
+        </main>
+    </body>
+</html>

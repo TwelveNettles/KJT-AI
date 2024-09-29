@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <title>KJT AI</title>
+
+    </head>
+    <style>
+        
+        .btn-open-popup {
+            padding: 5px 10px;
+            font-size: 18px;
+            background-color: green;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-open-popup:hover {
+            background-color: #4caf50;
+        }
+
+        .overlay-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .popup-box {
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            width: 320px;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #444;
+            text-align: center;
+        }
+
+        .form-input {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-submit,
+        .btn-close-popup {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-submit {
+            background-color: green;
+            color: #fff;
+        }
+
+        .btn-close-popup {
+            margin-top: 12px;
+            background-color: #e74c3c;
+            color: #fff;
+            font-size: 10px;
+        }
+
+        .btn-submit:hover,
+        .btn-close-popup:hover {
+            background-color: #4caf50;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .overlay-container.show {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid blue;
+            border-bottom: 16px solid blue;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+        
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+
+    </style>
+
+    <body>
+    
+        <h1>KJT</h1>
+        <h2>AI Generated Project Evaluator</h2>
+        <h3>Elevate your ideas to the next level</h3>
+
+        <label for="link-input">Project Title:<label><br><br>
+        <input type="text" id="title-input" name="title-input"><br><br>
+    
+        <label for="link-input">Project Description:<label><br><br>
+        <input type="text" id="description-input" name="description-input"><br><br>
+
+        <label for="link-input">Project Link:<label><br><br>
+        <input type="text" id="link-input" name="link-input"><br><br>
+
+        <button class="btn-open-popup" onclick="togglePopup()">Human Verification</button>
+
+        <div id="popupOverlay" 
+        class="overlay-container">
+        <div class="popup-box">
+            <h2 style="color: green;">Is the image below Kevin Jose Thomas</h2>
+                <form class="form-container">
+                    <img src="RAT_KJT.jpg">
+                    <button class="btn-submit" 
+                            type="submit">
+                        Yes
+                        </button>
+                </form>
+                <button class="btn-close-popup" 
+                        onclick="togglePopup()">
+                    Yes...
+                    </button>
+            </div>
+        </div>  
+
+        <button id="submit" onclick="onSubmit();insultChange();">Submit</button> 
+
+
+        <div id="loadDiv"></div>
+
+        <p id="p1"></p>
+
+        <script>
+        var loaded = 0;
+        var charCount = 0;
+        var speed = 40;
+        var element = document.getElementById("loadDiv");
+
+        const insults = [
+            "This project has the creativity of a beige wall and the functionality of a screen door a submarine.",
+            "I've seen abandoned shopping carts with more direction than this mess.",
+            "If confusion was the goal, congratulations, this is a masterpiece.",
+            "This project should be in a museum – right next to the exhibits on what not to do.",
+            "I didn’t realize ‘disaster’ could be an art form until I saw this.",
+            "This has all the excitement of watching paint dry, but somehow less progress.",
+            "It's like you took all the worst ideas, put them in a blender, and hit 'catastrophe' instead of 'blend.'"
+        ];
+
+        function onSubmit() {
+            element.classList.add("loader");
+            var id = setInterval(frame, 100);
+            function frame() {
+                if (loaded >= 100) {
+                    clearInterval(id);
+                    loaded = 0;
+                    element.classList.remove("loader");
+                    typeWriter();
+                } else {
+                    loaded++;
+                }
+            }
+        }
+    
+        function insultChange() {
+            randInt = Math.floor(Math.random() * 7);
+            randText = insults[randInt]
+        }
+
+        function typeWriter() {
+            if (charCount < randText.length) {
+                document.getElementById("p1").innerHTML += randText.charAt(charCount);
+                charCount++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        function togglePopup() {
+            const overlay = document.getElementById('popupOverlay');
+            overlay.classList.toggle('show');
+        }
+
+        </script>
+    </body>
+</html>
